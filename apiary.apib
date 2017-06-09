@@ -1,0 +1,75 @@
+FORMAT: 1A
+HOST: http://dashboard.seed-up.org/
+
+# Seed-up API
+
+## Users Collection [/users]
+
+### List All Users [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "name": "Liazidi",
+                "fname": "Amine",
+                "address": "23 Avenue Bernard Palissy, 92210 Saint Cloud",
+                "email": "liazidiiamine@gmail.com",
+                "status": "Membre de Seed-up"
+            },
+            {
+                "name": "Boehm",
+                "fname": "Steven",
+                "address": "23 Avenue Bernard Palissy, 92210 Saint Cloud",
+                "email": "boehm_s@etna-alternance.net",
+                "status": "Membre de Seed-up"
+            },
+            {
+                "name": "Boehm",
+                "fname": "Erwan",
+                "address": "23 Avenue Bernard Palissy, 92210 Saint Cloud",
+                "email": "boehm_e@etna-alternance.net",
+                "status": "Membre de Seed-up"
+            }
+        ]
+
+### Create a New User [POST]
+
++ Request (application/json)
+
+        {
+            "name": "Liazidi",
+            "fname": "Amine",
+            "address": "23 Avenue Bernard Palissy, 92210 Saint Cloud",
+            "email": "liazidiiamine@gmail.com",
+            "status": 1
+        }
+
++ Response 201 (application/json)
+
+        {
+            "name": "Liazidi Amine",
+            "email": "liazidiiamine@gmail.com",
+            "created_at": "2015-08-05T08:40:51.620Z"
+        }
+
+### Update a User [PUT]
+
++ Request (application/json)
+
+        {
+            "name": "Liazidi",
+            "fname": "Amine",
+            "address": "23 Avenue Bernard Palissy, 92210 Saint Cloud",
+            "email": "liazidiiamine@gmail.com",
+            "status": 1
+        }
+
++ Response 201 (application/json)
+
+
+        {
+            "name": "Liazidi Amine",
+            "email": "liazidiiamine@gmail.com",
+            "updated_at": "2015-08-05T08:40:51.620Z"
+        }
