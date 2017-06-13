@@ -6,7 +6,8 @@ const router = express.Router();
 router.route('/')
   .post(userController.create);
 
-router.route('/:id')
-  .get(userController.getById);
+router.route('/')
+  .get(userController.getAll);
 
+  
 export default router;

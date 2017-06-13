@@ -4,17 +4,19 @@ const _ = require('lodash');
 module.exports = Bookshelf.Model.extend({
     tableName: 'users',
     hidden: ['password'],
+
     async update(body) {
         this.set(body);
         return await this.save();
     },
+
     light() {
         return _.pick(this.toJSON(), ["firstname"]);
     }
+    
 }, {
     async create(body) {
         const user = await (await new this(body).save()).fetch();
-
         return user;
     },
 
@@ -23,6 +25,6 @@ module.exports = Bookshelf.Model.extend({
     },
 
     async getAll() {
-	return await this.query({}).fetchAll();
+	     return await this.query({}).fetchAll();
     }
 });
