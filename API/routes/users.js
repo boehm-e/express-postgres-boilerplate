@@ -3,10 +3,10 @@ import userController from './../controllers/user';
 
 const router = express.Router();
 
-router.route('/:id')
-  .put(userController.update);
+router.route('/')
+  .post(userController.create);
 
-router.route('/:id')
-  .get(userController.getById);
+router.route('/')
+  .get(userController.getAll);
 
 export default router;

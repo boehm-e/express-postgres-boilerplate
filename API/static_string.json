@@ -1,0 +1,7 @@
+{
+  "DB_UNIQUE_CONSTRAINT_ERROR" : "duplicate key value violates unique constraint",
+  "DB_INVALID_INPUT_ERROR_NORESULT" : "TypeError: Cannot convert undefined or null to object",
+  "ERROR_EMAIL_ALREADY_EXIST" : "This email address is already in use.",
+  "WELCOME_MESSAGE" : "Logged in",
+  "ERROR_INVALID_PARAMETRE" : "Invalid parametre. Record not found."
+}
