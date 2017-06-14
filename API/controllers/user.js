@@ -4,18 +4,17 @@ const resources = require('../static_string.json');
 const getById = async (req, res, next) => {
     try{
         const user = (await User.getById(req.params.id));
+        
+        return res.send(user);
+
     }catch(err){
         var check = err.toString().indexOf(resources.DB_INVALID_INPUT_ERROR_NORESULT);
         if(check >= 0){
             return res.send({ error: resources.ERROR_INVALID_PARAMETRE });
-        }else{
-            console.log(err);
         }
+        console.log(err);
         return next(err);
     }
-
-
-    return res.send(user);
 };
 
 const create = async (req, res, next) => {
@@ -33,17 +32,17 @@ const create = async (req, res, next) => {
         var check = err.toString().indexOf(resources.DB_UNIQUE_CONSTRAINT_ERROR);
         if(check >= 0){
             return res.send({ error: resources.ERROR_EMAIL_ALREADY_EXIST });
-        }else{
-            console.log(err);
         }
+        console.log(err);
         return next(err);
     }
 };
 
 const update = async (req, res, next) => {
-  const user = await (User.update(req.body, req.params.id));
-  console.log(user);
-  return res.send(user);
+  const user = (await User.getById(req.params.id));
+  const updated = (await User.update(req.body, user));
+
+  return res.send(updated);
 };
 
 const getAll = async (req, res) => {

@@ -1,33 +1,28 @@
 const Bookshelf = require('../../config/db');
 const _ = require('lodash');
 const bcrypt = require('bcrypt-then');
+const COLUMNS = {columns: ['name', 'fname', 'address', 'email', 'status', 'password']};
 
 
 module.exports = Bookshelf.Model.extend({
     tableName: 'users',
     hidden: ['password'],
 
-    /*update :async function(body){
-        const realbody = _.pick(body, ['name', 'fname', 'address', 'status', 'password', 'email']);
-        if (realbody.password) {
-            realbody.password = await bcrypt.hash(realbody.password, 10);
-        }
-        var user = await this.where('email', '=', realbody.email).fetch();
-        realbody.email = user.email;
-        this.set(realbody);
-        await this.save();
-
-        return user;
-    },*/
+    update :async function(body){
+        /*
+            A compléter
+        */
+    },
 
     light: function() {
         return _.pick(this.toJSON(), ["firstname"]);
     }
 }, {
 
-    async update(body, id){
-        var user = this.getById(id);
-        console.log(user);
+    async update(body, user){
+        /*
+            A compléter
+        */
     },
 
     async create(body) {
@@ -39,10 +34,10 @@ module.exports = Bookshelf.Model.extend({
     },
 
     async getById(id) {
-        return await this.query({where: {id}}).fetch();
+        return await this.query({where: {id}}).fetch(COLUMNS);
     },
 
     async getAll() {
-	     return await this.query({}).fetchAll();
+	     return await this.query({}).fetchAll(COLUMNS);
     }
 });
