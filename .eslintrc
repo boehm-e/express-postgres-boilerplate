@@ -16,7 +16,6 @@
 	"no-unused-vars": "warn",
 	"no-undefined": "error",
 	"no-use-before-define": "error",
-	"global-require": "warn",
 	"no-sync": "warn",
 	"camelcase": ["warn", {"properties": "always"}],
 	"block-spacing": "warn",
