@@ -1,24 +1,21 @@
-const Bookshelf = require('../../config/db');
-const _ = require('lodash');
-const bcrypt = require('bcrypt-then');
+import Bookshelf	from '../../config/db';
+import _		      from 'lodash';
+import bcrypt     from 'bcrypt-then';
+
 const COLUMNS = {columns: ['name', 'fname', 'address', 'email', 'status', 'password']};
 
 
 module.exports = Bookshelf.Model.extend({
     tableName: 'users',
     hidden: ['password'],
-
-    async update() {
-        /*
-            A compléter
-        */
+    async update(body) {
+        this.set(body);
+        return await this.save();
     },
-
     light() {
         return _.pick(this.toJSON(), ["firstname"]);
     }
 }, {
-
     async update() {
         /*
             A compléter

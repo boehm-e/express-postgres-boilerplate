@@ -1,16 +1,8 @@
-let redis = null;
+import _redis from "redis";
+const redis = _redis.createClient();
 
-const init = cb => {
-    const _redis = require("redis");
-
-    redis = _redis.createClient();
-    redis.on("error", err => {
-	throw new Error((`Error ${err}`));
-    });
-
-    cb();
-};
-
+redis.on("error", err => {
+    throw new Error((`Error ${err}`));
+});
 
 export default redis;
-export {init};

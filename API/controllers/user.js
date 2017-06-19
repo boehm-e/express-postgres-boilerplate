@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const resources = require('../static_string.json');
 
+
 const getById = async (req, res, next) => {
     try {
         const user = await User.getById(req.params.id);

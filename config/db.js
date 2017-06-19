@@ -1,12 +1,5 @@
-let bookshelf = null;
-
-const init = cb => {
-    const conf =  require('./knexfile');
-    const knex	= require('knex')(conf[process.env.NODE_ENV || "development"]);
-
-    bookshelf = require('bookshelf')(knex);
-    cb();
-};
+const conf =  require('./knexfile');
+const knex = require('knex')(conf[process.env.NODE_ENV || "development"]);
+const bookshelf = require('bookshelf')(knex);
 
 export default bookshelf;
-export {init};
