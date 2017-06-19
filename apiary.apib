@@ -32,7 +32,7 @@ HOST: http://dashboard.seed-up.org/
                 "status": "Membre de Seed-up"
             }
         ]
-        
+
 
 ### Create a New User [POST]
 
@@ -49,12 +49,19 @@ HOST: http://dashboard.seed-up.org/
 
 + Response 201 (application/json)
 
-        {
-            "name": "Liazidi Amine",
-            "email": "liazidiiamine@gmail.com",
-            "created_at": "2015-08-05T08:40:51.620Z"
-        }
-        
+    + Header
+
+            Location: /users/1
+            Etag: "686897696a7c876b7e"
+    + Body
+
+            {
+                "id": 1
+                "name": "Liazidi Amine",
+                "email": "liazidiiamine@gmail.com",
+                "created_at": "2015-08-05T08:40:51.620Z"
+            }
+
 ## User [/users/{id}]
 
 + Parameters
@@ -64,10 +71,15 @@ HOST: http://dashboard.seed-up.org/
 
 + Request (application/json)
 
-        {
-            "id": 0
-        }
-        
+    + Header
+
+            If-None-Match: "686897696a7c876b7e"
+    + Body
+
+            {
+                "id": 0
+            }
+
 + Response 200 (application/json)
 
         {
@@ -77,7 +89,11 @@ HOST: http://dashboard.seed-up.org/
             "email": "liazidiiamine@gmail.com",
             "status": 1
         }
-        
+
++ Response 304 (text/plain)
+
+        "Not modified"
+
 ### Update a User [PUT]
 
 + Request (application/json)
@@ -91,11 +107,16 @@ HOST: http://dashboard.seed-up.org/
             "password": "coucoutoi666"
         }
 
-+ Response 201 (application/json)
++ Response 200 (application/json)
 
+    + Header
 
-        {
-            "name": "Liazidi Amine",
-            "email": "liazidiiamine@gmail.com",
-            "updated_at": "2015-08-05T08:40:51.620Z"
-        }
+            Location: /users/1
+            Etag: "86549769456b7c876b"
+    + Body
+
+            {
+                "name": "Liazidi Amine",
+                "email": "liazidiiamine@gmail.com",
+                "updated_at": "2015-08-05T08:40:51.620Z"
+            }

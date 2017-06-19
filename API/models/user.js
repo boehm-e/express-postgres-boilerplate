@@ -39,5 +39,14 @@ module.exports = Bookshelf.Model.extend({
 
     async getAll() {
 	     return await this.query({}).fetchAll(COLUMNS);
-    }
+    },
+
+    async delete(id) {
+      try {
+        await new this({id: id}).destroy({require: true});
+        } catch (e) {
+            return false;
+        }
+        return true;
+      }
 });
