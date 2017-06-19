@@ -3,9 +3,9 @@ module.exports = {
         client: 'postgresql',
         connection: {
             host:'127.0.0.1',
-            database: process.env.DB_NAME || 'seedup',
-            user:     process.env.DB_USER || 'seedup',
-            password: 'seedup'
+            database: process.env.DB_NAME || 'dashboard',
+            user:     process.env.DB_USER || 'dashboard',
+            password: 'dashboard_password'
         },
         pool: {
             min: 2,
@@ -19,9 +19,9 @@ module.exports = {
         client: 'postgresql',
         connection: {
             host:'127.0.0.1',
-            database: process.env.DB_NAME || 'seedup',
-            user:     process.env.DB_USER || 'postgresql',
-            password: 'seedup'
+            database: process.env.DB_NAME || 'dashboard',
+            user:     process.env.DB_USER || 'dashboard',
+            password: 'dashboard_password'
         },
         pool: {
             min: 2,

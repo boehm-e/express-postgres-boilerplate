@@ -1,12 +1,19 @@
 import express from 'express';
 import userController from './../controllers/user';
 
-const router = express.Router();
+const router1 = express.Router();
+const router2 = express.Router();
 
-router.route('/')
-  .post(userController.create);
+router1.route('/:id')
+  .put(userController.update);
 
-router.route('/:id')
+router1.route('/:id')
   .get(userController.getById);
 
-export default router;
+router2.route('/')
+  .post(userController.create);
+
+router2.route('/')
+  .get(userController.getAll);
+
+export {router1, router2};
