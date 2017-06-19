@@ -8,7 +8,7 @@ module.exports = Bookshelf.Model.extend({
     tableName: 'users',
     hidden: ['password'],
 
-    update :async function(body){
+    update :async function() {
         /*
             A compléter
         */
@@ -19,7 +19,7 @@ module.exports = Bookshelf.Model.extend({
     }
 }, {
 
-    async update(body, user){
+    async update() {
         /*
             A compléter
         */

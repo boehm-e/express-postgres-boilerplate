@@ -4,10 +4,12 @@ const resources = require('../static_string.json');
 const getById = async (req, res, next) => {
     try{
         const user = (await User.getById(req.params.id));
+
         return res.send(user);
-    }catch(err){
+    }catch(err) {
         const check = err.toString().indexOf(resources.DB_INVALID_INPUT_ERROR_NORESULT);
-        return (check >= 0)
+
+        return (0 <= check)
             ? res.send({ error: resources.ERROR_INVALID_PARAMETRE })
             : next(err);
     }
@@ -16,23 +18,26 @@ const getById = async (req, res, next) => {
 const create = async (req, res, next) => {
     try{
         const user = await (User.create(req.body));
+
         const response = {
             message: resources.WELCOME_MESSAGE,
             name: user.name,
             email: user.email,
-            created_at: user.created_at
+            createdAt: user.created_at
         };
+
         return res.send(response);
 
-    }catch(err){
+    }catch(err) {
         const check = err.toString().indexOf(resources.DB_UNIQUE_CONSTRAINT_ERROR);
-        return (check >= 0)
+
+        return (0 <= check)
             ? res.send({ error: resources.ERROR_EMAIL_ALREADY_EXIST })
             : next(err);
     }
 };
 
-const update = async (req, res, next) => {
+const update = async (req, res) => {
   const user = (await User.getById(req.params.id));
   const updated = (await User.update(req.body, user));
 
@@ -41,6 +46,7 @@ const update = async (req, res, next) => {
 
 const getAll = async (req, res) => {
   const users = (await User.getAll(req.body));
+
   return res.send(users);
 };
 
