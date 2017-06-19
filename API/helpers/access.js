@@ -21,16 +21,9 @@ const getCurrentUser = async (req, _, next = null) => {
 	next();
 };
 
-const authorize = roles => async (req, res, next) => {
-    if (!req.hasOwnProperty('user'))
-	await getCurrentUser(req);
-    if (1 === roles.length && 'admin' === roles[0] && 'admin' !== req.user.role) /* 403 for admin-only routes */
-	return res.status(403).json({message: "You're not authorize to access this route."});
-    else if (!roles.includes(req.user.role))
-	return res.status(401).json({message: "You're not authorize to access this route."});
-    else
-	return next();
+const RBAC = () => {
+
 };
 
 
-export default {authorize, getCurrentUser};
+export default {RBAC, getCurrentUser};
