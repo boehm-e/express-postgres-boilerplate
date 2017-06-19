@@ -1,7 +1,7 @@
 exports.up = function(knex, Promise) {
   return Promise.all([
     knex('status')
-      .insert({tostring: "Membre Seed-up"}),
+      .insert({tostring: "Membre"}),
     knex('status')
       .insert({tostring: "Client"}),
     knex('status')

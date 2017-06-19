@@ -26,7 +26,6 @@ module.exports = Bookshelf.Model.extend({
     },
 
     async create(body) {
-        var user = body;
         if (body.password) {
             body.password = await bcrypt.hash(realbody.password, 10);
         }
