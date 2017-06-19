@@ -1,7 +1,7 @@
 import createServer	from  './config/server';
 import dbConf		from  './config/db';
 import app		from  './config/app';
-import apiRoutes	from  './API/index';
+import apiRoutes	from  './API/routes/index';
 
 require('dotenv').config();
 

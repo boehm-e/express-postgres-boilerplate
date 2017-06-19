@@ -37,7 +37,7 @@ const create = async (req, res, next) => {
     }
 };
 
-const update = async (req, res) => {
+const updateById = async (req, res) => {
   const user = (await User.getById(req.params.id));
   const updated = (await User.update(req.body, user));
 
@@ -50,4 +50,4 @@ const getAll = async (req, res) => {
   return res.send(users);
 };
 
-export default {getById, create, update, getAll};
+export default {getById, create, updateById, getAll};
