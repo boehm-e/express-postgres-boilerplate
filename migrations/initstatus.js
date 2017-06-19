@@ -1,29 +1,29 @@
 exports.up = function(knex, Promise) {
   return Promise.all([
     knex('status')
-      .insert({tostring: "Membre"}),
+      .insert({tostring: "member"}),
     knex('status')
-      .insert({tostring: "Client"}),
+      .insert({tostring: "customer"}),
     knex('status')
-      .insert({tostring: "Candidat"}),
+      .insert({tostring: "candidate"}),
     knex('status')
-      .insert({tostring: "Admin"})
+      .insert({tostring: "admin"})
   ]);
 };
 
 exports.down = function(knex, Promise) {
   return Promise.all([
     knex('status')
-      .where('tostring', 'Client')
+      .where('tostring', 'member')
       .del(),
     knex('status')
-      .where('tostring', 'Candidat')
+      .where('tostring', 'customer')
       .del(),
     knex('status')
-      .where('tostring', 'Admin')
+      .where('tostring', 'candidate')
       .del(),
     knex('status')
-      .where('tostring', 'Membre Seed-up')
+      .where('tostring', 'admin')
       .del()
   ]);
 };
