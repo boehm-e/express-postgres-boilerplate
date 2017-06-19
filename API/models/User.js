@@ -1,5 +1,5 @@
-const Bookshelf = require('../../config/db');
-const _ = require('lodash');
+import Bookshelf	from '../../config/db';
+import _		from 'lodash';
 
 module.exports = Bookshelf.Model.extend({
     tableName: 'users',
