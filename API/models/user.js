@@ -8,13 +8,13 @@ module.exports = Bookshelf.Model.extend({
     tableName: 'users',
     hidden: ['password'],
 
-    update :async function() {
+    async update() {
         /*
             A compléter
         */
     },
 
-    light: function() {
+    light() {
         return _.pick(this.toJSON(), ["firstname"]);
     }
 }, {
@@ -43,9 +43,9 @@ module.exports = Bookshelf.Model.extend({
     async delete(id) {
       try {
         await new this({id: id}).destroy({require: true});
-        } catch (e) {
-            return false;
-        }
-        return true;
+      } catch (e) {
+        return false;
       }
+      return true;
+    }
 });
