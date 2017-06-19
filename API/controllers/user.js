@@ -2,11 +2,11 @@ const User = require('../models/user');
 const resources = require('../static_string.json');
 
 const getById = async (req, res, next) => {
-    try{
-        const user = (await User.getById(req.params.id));
+    try {
+        const user = await User.getById(req.params.id);
 
         return res.send(user);
-    }catch(err) {
+    } catch(err) {
         const check = err.toString().indexOf(resources.DB_INVALID_INPUT_ERROR_NORESULT);
 
         return (0 <= check)
@@ -16,9 +16,8 @@ const getById = async (req, res, next) => {
 };
 
 const create = async (req, res, next) => {
-    try{
+    try {
         const user = await (User.create(req.body));
-
         const response = {
             message: resources.WELCOME_MESSAGE,
             name: user.name,
@@ -28,7 +27,7 @@ const create = async (req, res, next) => {
 
         return res.send(response);
 
-    }catch(err) {
+    } catch(err) {
         const check = err.toString().indexOf(resources.DB_UNIQUE_CONSTRAINT_ERROR);
 
         return (0 <= check)
@@ -45,7 +44,7 @@ const update = async (req, res) => {
 };
 
 const getAll = async (req, res) => {
-  const users = (await User.getAll(req.body));
+  const users = await User.getAll(req.body);
 
   return res.send(users);
 };
