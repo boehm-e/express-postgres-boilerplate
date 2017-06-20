@@ -1,5 +1,6 @@
-import express from 'express';
-import userController from './../controllers/user';
+import express		from 'express';
+import userController	from './../controllers/user';
+import RBAC		from './../helpers/access';
 
 const router = express.Router();
 
