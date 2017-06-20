@@ -39,7 +39,7 @@ module.exports = Bookshelf.Model.extend({
 
     async delete(id) {
       try {
-        await new this({id: id}).destroy({require: true});
+        await new this({id}).destroy({require: true});
       } catch (e) {
         return false;
       }

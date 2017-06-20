@@ -10,6 +10,7 @@ const getCurrentUser = async (req, _, next = null) => {
   };
   else {
     let user = await usersModel.getByToken(auth);
+
     req.user = {
       role: user ? user.role : 'anonymous',
       data: user ? user : null

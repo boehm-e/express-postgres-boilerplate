@@ -5,11 +5,9 @@ const passport     = require('passport');
 
 router.get('/health-check', (_, res) => res.send('OK'));
 
-
-router.get('/profile', passport.authenticationMiddleware(), function(req,res) {
-  console.log("YOU ARE AUTHETICATED");
-  res.send("YOU ARE AUTHETICATED")
-})
+router.get('/profile', passport.authenticationMiddleware(), (req,res) => {
+  res.send("AUTHETICATED :)");
+});
 
 router.post('/login',
   passport.authenticate('ldapauth', {
@@ -18,16 +16,13 @@ router.post('/login',
   })
 );
 
-router.get('/loginFailure', function(req, res, next) {
+router.get('/loginFailure', (req, res) => {
   res.send('Failed to authenticate');
 });
 
-router.get('/loginSuccess', function(req, res, next) {
+router.get('/loginSuccess', (req, res) => {
   res.send('Successfully authenticated');
 });
-
-
-
 
 router.use('/users', usersRoutes);
 

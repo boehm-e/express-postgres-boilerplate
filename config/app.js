@@ -1,67 +1,48 @@
-const password = "dashboard";
-
 import express		from	 'express';
 import bodyParser	from	 'body-parser';
 import logger		from	 'morgan';
-import cookieParser	from	 'cookie-parser';
-
-// setup passport-ldap
 import passport from 'passport';
+import cookieParser	from	 'cookie-parser';
 import LdapStrategy from 'passport-ldapauth';
 import session from 'express-session';
-const RedisStore = require('connect-redis')(session)
+import RedisStore from 'connect-redis';
+import Redis from 'redis';
+import passportConf from '../config/passport';
 
-
-
+const redisStore = RedisStore(session);
+const redis = Redis.createClient();
 const app	= express();
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser('seedup'));
+app.use(cookieParser(passportConf.secret));
 
 //setup passport-ldap
+passport.use(new LdapStrategy(passportConf.strategy));
+passport.serializeUser((user, done) =>  done(null, user));
+passport.deserializeUser((user, done) => done(null, user));
 
-var OPTS = {
-  server: {
-    url: 'ldap://localhost:1389',
-    bindDN: 'uid=dashboard,ou=services,dc=seed-up,dc=org',
-    bindCredentials: password,
-    searchBase: 'ou=people,dc=seed-up,dc=org',
-    searchFilter: '(uid={{username}})',
-    reconnect: true
-  }
-};
-passport.use(new LdapStrategy(OPTS));
-passport.serializeUser(function(user, done) {
-  done(null, user);
-});
-passport.deserializeUser(function(user, done) {
-  done(null, user);
-});
-passport.authenticationMiddleware = function () {
-  return function (req, res, next) {
-    console.log(req.isAuthenticated());
-    console.log(req.cookies);
+// TODO: implement access control
+passport.authenticationMiddleware = () => {
+  return (req, res, next) => {
     if (req.isAuthenticated()) {
-      return next()
+      return next();
     }
-    res.status(401).send('you are not authenticated')
-  }
-}
-const redis = require('redis').createClient();
+    res.status(401).send('NOT AUTHETICATED :(');
+  };
+};
 
 app.use(session({
-  store: new RedisStore({ host: 'localhost', port: 6397, client: redis}),
-  secret: "seedup",
+  store: new redisStore({ host: passportConf.redis.host, port: passportConf.redis.port, client: redis}),
+  secret: passportConf.secret,
   cookie : {
     expires: false
   }
-}))
-app.use(passport.initialize())
-app.use(passport.session())
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 export default app;
