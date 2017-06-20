@@ -31,6 +31,8 @@
     "morgan": "^1.7.0",
     "nodemon": "^1.11.0",
     "objection": "^0.8.2",
+    "passport": "^0.3.2",
+    "passport-ldapauth": "^2.0.0",
     "pg": "^6.2.3",
     "redis": "^2.7.1"
   },
