@@ -40,20 +40,31 @@ const getPermissions = (user, role) => {
 	getPermissions(user, permissions[role].inherits);
 };
 
+// getCurrentUser :
+//     - get `req.user`
+//     - insert all inherited permissions in `req.user.permissions`
 
-// req.body.targets = Array d'IDs
-// req.targets = Array de modeles
+// access :
+//     - get `req.targets` (need the target model)
+//     - check if user has `self` or `in` permissions
+//       -> filter the 'in' or 'self' permissions like that :  req.targets[0].hasAccess(req.user.id, 'self / in')
+//     - if req.user.permissions contains at leat one permission in the access permissions --> next, else --> 401.
+
+
+// req.body.targets = Array of IDs
+// req.targets = Array of models
 // every models should have the following methods : getById, hasAccess
+//
 
-const getTargets = model => async (req, res, next) => { // targets must be ids
-    if (req.params.hasOwnProperty('id'))
-	req.targets = [req.params.id];
-    if (req.body.hasOwnProperty('targets'))
-	req.targets = Array.isArray(req.body.targets) ? req.body.targets : [req.body.targets];
+// const getTargets = model => async (req, res, next) => { // targets must be ids
+//     if (req.params.hasOwnProperty('id'))
+// 	req.targets = [req.params.id];
+//     if (req.body.hasOwnProperty('targets'))
+// 	req.targets = Array.isArray(req.body.targets) ? req.body.targets : [req.body.targets];
 
-    // turn IDs to models
-    req.targets = req.targets.map(async (id) => model.getById(id));
-};
+//     // turn IDs to models
+//     req.targets = req.targets.map(async (id) => await model.getById(id));
+// };
 
 // const filterPermissions = async (targets, permissions) => {
 //     const collections = permissions
@@ -67,14 +78,14 @@ const getTargets = model => async (req, res, next) => { // targets must be ids
 
 
 
-const access = (permArr, filterPerms) => async (req, res, next) => {
-    if (!req.hasOwnProperty('user'))
-	await getCurrentUser(req);
-    if (!req.hasOwnProperty('targets'))
-	getTargets(req);
-    if (req.hasOwnProperty('targets') && !!permArr.filter(perm => ['in', 'self'].includes(perm.split('.')[1])))
-	await filterPermissions(req.targets, req.user.permissions); // check if the user is the target (self) or if he belongs to the targets (in)
+// const access = (permArr, filterPerms) => async (req, res, next) => {
+//     if (!req.hasOwnProperty('user'))
+// 	await getCurrentUser(req);
+//     if (!req.hasOwnProperty('targets'))
+// 	getTargets(req);
+//     if (req.hasOwnProperty('targets') && !!permArr.filter(perm => ['in', 'self'].includes(perm.split('.')[1])))
+// 	await filterPermissions(req.targets, req.user.permissions); // check if the user is the target (self) or if he belongs to the targets (in)
 
-};
+// };
 
 export default {getCurrentUser};
