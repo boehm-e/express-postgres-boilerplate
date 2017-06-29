@@ -1,13 +1,13 @@
 import express		from	 'express';
 import bodyParser	from	 'body-parser';
 import logger		from	 'morgan';
-import passport from 'passport';
+import passport     from     'passport';
 import cookieParser	from	 'cookie-parser';
-import LdapStrategy from 'passport-ldapauth';
-import session from 'express-session';
-import RedisStore from 'connect-redis';
-import Redis from 'redis';
-import passportConf from '../config/passport';
+import LdapStrategy from     'passport-ldapauth';
+import session      from     'express-session';
+import RedisStore   from     'connect-redis';
+import Redis        from     'redis';
+import passportConf from     '../config/passport';
 
 const redisStore = RedisStore(session);
 const redis = Redis.createClient();
@@ -24,14 +24,11 @@ passport.serializeUser((user, done) =>  done(null, user));
 passport.deserializeUser((user, done) => done(null, user));
 
 // TODO: implement access control
-passport.authenticationMiddleware = () => {
-  return (req, res, next) => {
-    if (req.isAuthenticated()) {
-      return next();
-    }
-    res.status(401).send('NOT AUTHETICATED :(');
-  };
-};
+passport.authenticationMiddleware = () => (req, res, next) => (
+   req.isAuthenticated() ?
+    ? next()
+    : res.status(401).send('NOT AUTHETICATED :(')
+);
 
 app.use(session({
   store: new redisStore({ host: passportConf.redis.host, port: passportConf.redis.port, client: redis}),
