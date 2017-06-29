@@ -1,5 +1,5 @@
-import usersModel	from "./../models/users";
-import permissions	from "./../../permissions";
+import usersModel			from "./../models/users";
+import {permissions, collectionToModel}	from "./../../permissions";
 
 const getCurrentUser = async (req, _, next = null) => {
     const auth = req.get('Authorization');
@@ -19,7 +19,6 @@ const getCurrentUser = async (req, _, next = null) => {
     if (permissions.includes(req.user.role)) {
 	req.user.permissions = [];
 	getPermissions(req.user, JSON.parse(JSON.stringify(req.user.role)));
-	console.log(req.user.permissions);
     }
 
     if (next) next();
@@ -36,6 +35,7 @@ const getPermissions = (user, role) => {
 	    }
 	});
     });
+
     if (permissions[role].hasOwnProperty('inherits'))
 	getPermissions(user, permissions[role].inherits);
 };
@@ -56,36 +56,40 @@ const getPermissions = (user, role) => {
 // every models should have the following methods : getById, hasAccess
 //
 
-// const getTargets = model => async (req, res, next) => { // targets must be ids
-//     if (req.params.hasOwnProperty('id'))
-// 	req.targets = [req.params.id];
-//     if (req.body.hasOwnProperty('targets'))
-// 	req.targets = Array.isArray(req.body.targets) ? req.body.targets : [req.body.targets];
+const getTargets = model => async (req, res, next) => { // targets must be ids
+    if (req.params.hasOwnProperty('id'))
+	req.targets = [req.params.id];
+    if (req.body.hasOwnProperty('targets'))
+	req.targets = Array.isArray(req.body.targets) ? req.body.targets : [req.body.targets];
 
-//     // turn IDs to models
-//     req.targets = req.targets.map(async (id) => await model.getById(id));
-// };
-
-// const filterPermissions = async (targets, permissions) => {
-//     const collections = permissions
-// 	      .filter(perm => ['in', 'self'].includes(perm.split('.')[1]))
-// 	      .map(perm => [perm.split('.')[1], perm.split('.')[0]]);
-
-//     collections.forEach(col => {
-
-//     });
-// };
+    // turn IDs to models
+    req.targets = req.targets.map(async (id) => await model.getById(id));
+};
 
 
+const checkPermissions = async (user, targets = [], permissions) =>
+      permissions.some(perm => targets.some(async (target) => await target.hasAccess(user.id, perm.split('.')[1])));
 
-// const access = (permArr, filterPerms) => async (req, res, next) => {
-//     if (!req.hasOwnProperty('user'))
-// 	await getCurrentUser(req);
-//     if (!req.hasOwnProperty('targets'))
-// 	getTargets(req);
-//     if (req.hasOwnProperty('targets') && !!permArr.filter(perm => ['in', 'self'].includes(perm.split('.')[1])))
-// 	await filterPermissions(req.targets, req.user.permissions); // check if the user is the target (self) or if he belongs to the targets (in)
 
-// };
+const access = (permArr) => async (req, res, next) => {
+    if (!req.hasOwnProperty('user'))
+	await getCurrentUser(req);
 
-export default {getCurrentUser};
+    const noMatchingPermissions = !!permArr.filter(perm => req.user.permissions.includes(perm)).length;
+    const commonPermissions = req.user.permissions.filter(perm => permArr.includes(perm));
+    const needTocheckUserPerm = !!commonPermissions
+	  .filter(commonPerm => !['in', 'self'].includes(commonPerm.split('.')[1]))
+	  .length;
+
+    if (noMatchingPermissions) {
+	return res.status(401).end("Not Authorized. You don't have sufficient permissions to access this route !");
+    } else if (needTocheckUserPerm) {
+	return checkPermissions(req.user, req.targets, commonPermissions)
+	    ? next()
+	    : res.status(401).end("Not Authorized. You don't have sufficient permissions to access this route.");
+    } else {
+	return next();
+    }
+};
+
+export default {getCurrentUser, getTargets};

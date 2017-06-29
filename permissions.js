@@ -20,7 +20,7 @@
 
 //    collection.[POSITION].[ACTION].(specific_permission)
 
-module.exports = {
+const permissions = {
     guest: {
 	permissions: [
 	    'users.all.list',
@@ -53,3 +53,20 @@ module.exports = {
 	inherits: 'member'
     }
 };
+
+const corresp = {
+    users: require('./API/models/user')
+//    projects: require('./API/models/projects')
+};
+
+
+const collectionToModel = async (strCol) => {
+    const model = corresp[strCol];
+
+    if (!model)
+	throw new Error(`No model corresponding to the collection name ${strCol}`);
+    else
+	return model;
+};
+
+export {permissions, collectionToModel}
