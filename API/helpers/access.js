@@ -1,7 +1,7 @@
 import usersModel from "./../models/users";
 
 const getCurrentUser = async (req, _, next = null) => {
-  let auth = req.get('Authorization');
+  const auth = req.get('Authorization');
 
   if (!auth)
   req.user = {
@@ -9,7 +9,7 @@ const getCurrentUser = async (req, _, next = null) => {
     data: null
   };
   else {
-    let user = await usersModel.getByToken(auth);
+    const user = await usersModel.getByToken(auth);
 
     req.user = {
       role: user ? user.role : 'anonymous',
@@ -20,9 +20,4 @@ const getCurrentUser = async (req, _, next = null) => {
   next();
 };
 
-const RBAC = () => {
-
-};
-
-
-export default {RBAC, getCurrentUser};
+export default {getCurrentUser};

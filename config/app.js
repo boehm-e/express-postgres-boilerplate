@@ -25,7 +25,7 @@ passport.deserializeUser((user, done) => done(null, user));
 
 // TODO: implement access control
 passport.authenticationMiddleware = () => (req, res, next) => (
-   req.isAuthenticated() ?
+   req.isAuthenticated()
     ? next()
     : res.status(401).send('NOT AUTHETICATED :(')
 );
