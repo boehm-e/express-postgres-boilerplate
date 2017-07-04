@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const User = require('../models/user');
 
 const getById = async (req, res) => {
     let user = (await User.get(req.params.id));

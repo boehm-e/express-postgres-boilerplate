@@ -1,4 +1,4 @@
-import usersModel			from "./../models/users";
+import usersModel			from "./../models/user";
 import {permissions, collectionToModel}	from "./../../permissions";
 
 const getCurrentUser = async (req, _, next = null) => {
